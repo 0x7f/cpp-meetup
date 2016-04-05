@@ -1,0 +1,6 @@
+[submodule "thirdparty/httpp"]
+	path = thirdparty/httpp
+	url = https://github.com/daedric/httpp/
+[submodule "thirdparty/protog"]
+	path = thirdparty/protog
+	url = https://github.com/0x7f/protog
