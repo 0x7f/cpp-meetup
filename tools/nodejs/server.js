@@ -27,7 +27,7 @@ if (cluster.isMaster) {
     });
     req.on('end', function() {
       var bidRequest = JSON.parse(body);
-      res.end("OK");
+      res.end("OK:" + bidRequest.id);
     });
   }).listen(PORT, function(){
     console.log("Server listening on: http://localhost:%s", PORT);

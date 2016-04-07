@@ -32,7 +32,7 @@ void body_handler(OpenRtbRequest* req,
         }
         req->connection->response()
             .setCode(HTTPP::HTTP::HttpCode::Ok)
-            .setBody("OK");
+            .setBody("OK:" + req->bidRequest.id());
         HTTPP::HTTP::setShouldConnectionBeClosed(req->connection->request(),
                                                  req->connection->response());
         req->connection->sendResponse(); // connection pointer may become invalid
