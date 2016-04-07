@@ -101,6 +101,9 @@ int main() {
 
     int numThreads = atoi(threads);
     assert(numThreads >= 0);
+
+    printf("Configuration: BENCHMARK_PORT=%s BENCHMARK_THREADS=%d\n", port, numThreads);
+
     commonpp::thread::ThreadPool threadPool{static_cast<size_t>(numThreads)};
 
     HTTPP::HttpServer server{threadPool};

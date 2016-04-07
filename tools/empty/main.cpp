@@ -8,54 +8,23 @@
 
 #include <httpp/HttpServer.hpp>
 #include <httpp/http/Utils.hpp>
+#include <httpp/utils/Exception.hpp>
 
 #include <commonpp/thread/ThreadPool.hpp>
 
-void body_handler(const HTTPP::HTTP::Request& request, HTTPP::HTTP::Connection* connection,
-                  const boost::system::error_code& ec,
-                  const char* buffer, size_t n) {
-    // TODO: why is no eof provided?
-    if (ec == boost::asio::error::eof || n == 0) {
-        connection->response()
-            .setCode(HTTPP::HTTP::HttpCode::Ok)
-            .setBody("OK");
-        HTTPP::HTTP::setShouldConnectionBeClosed(request, connection->response());
-        connection->sendResponse(); // connection pointer may become invalid
-    } else if (ec) {
-        throw std::runtime_error("MOOOOOOOOOO");
-    } else {
-        // ignore body
-    }
-}
-
 void connection_handler(HTTPP::HTTP::Connection* connection) {
-    auto& request = connection->request();
-    auto it = std::find_if(
-        request.headers.begin(), request.headers.end(), [](const HTTPP::HTTP::HeaderRef& s) {
-            return ::strncasecmp("Content-Length", s.first.data(), 14) == 0;
-        });
+    read_whole_request(connection, [](std::unique_ptr<HTTPP::HTTP::helper::ReadWholeRequest> handle,
+                                      const boost::system::error_code& ec) {
+        if (ec) {
+            throw HTTPP::UTILS::convert_boost_ec_to_std_ec(ec);
+        }
 
-    size_t size = 0;
-    if (it != request.headers.end())
-    {
-        size = atoi(it->second.data());
-    }
-
-    if (size) {
-        connection->read(size,
-                std::bind(&body_handler,
-                    request,
-                    connection,
-                    std::placeholders::_1,
-                    std::placeholders::_2,
-                    std::placeholders::_3));
-    } else {
-        connection->response()
-            .setCode(HTTPP::HTTP::HttpCode::Ok)
-            .setBody("OK");
-        HTTPP::HTTP::setShouldConnectionBeClosed(request, connection->response());
+        auto connection = handle->connection;
+        connection->response().setCode(HTTPP::HTTP::HttpCode::Ok).setBody("OK");
+        HTTPP::HTTP::setShouldConnectionBeClosed(connection->request(),
+                                                 connection->response());
         connection->sendResponse(); // connection pointer may become invalid
-    }
+    });
 }
 
 int main() {
@@ -77,6 +46,9 @@ int main() {
 
     int numThreads = atoi(threads);
     assert(numThreads >= 0);
+
+    printf("Configuration: BENCHMARK_PORT=%s BENCHMARK_THREADS=%d\n", port, numThreads);
+
     commonpp::thread::ThreadPool threadPool{static_cast<size_t>(numThreads)};
 
     HTTPP::HttpServer server{threadPool};
