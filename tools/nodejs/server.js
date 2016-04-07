@@ -1,10 +1,16 @@
 const assert = require('assert');
 const cluster = require('cluster');
 const http = require('http');
+const util = require('util');
+
+const ajv = require('ajv');
 
 assert(process.env.BENCHMARK_THREADS && process.env.BENCHMARK_PORT);
 const CONCURRENCY = process.env.BENCHMARK_THREADS;
 const PORT = Number(process.env.BENCHMARK_PORT);
+
+const schema = require('../../share/openrtb-schema_bid-request_v2-3.json');
+var validate = ajv().compile(schema);
 
 if (cluster.isMaster) {
   for (var i = 0; i < CONCURRENCY; i++) {
@@ -27,6 +33,12 @@ if (cluster.isMaster) {
     });
     req.on('end', function() {
       var bidRequest = JSON.parse(body);
+
+      if (!validate(bidRequest)) {
+        res.statusCode = 400;
+        res.end("Invalid json: " + util.inspect(validate.errors));
+        return;
+      }
       res.end("OK:" + bidRequest.id);
     });
   }).listen(PORT, function(){
