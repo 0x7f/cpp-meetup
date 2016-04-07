@@ -14,6 +14,8 @@ mkdir -p thirdparty/httpp/build
 (cd thirdparty/httpp/build && cmake .. && make)
 mkdir -p thirdparty/protog/build
 (cd thirdparty/protog/build && cmake .. && make)
+mkdir -p thirdparty/rapidjson/build
+(cd thirdparty/rapidjson/build && cmake .. && make)
 ```
 
 ```
