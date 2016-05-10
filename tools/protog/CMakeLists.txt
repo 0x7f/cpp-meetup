@@ -6,7 +6,7 @@ set(PARSER_HDRS ${CMAKE_CURRENT_BINARY_DIR}/bidrequest_parser.pb.h)
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${OPENRTB_PROTO})
 add_custom_command(
     OUTPUT ${PARSER_SRCS} ${PARSER_HDRS}
-    COMMAND ${PROTOG_BIN} ${OPENRTB_PROTO} openrtb.pb.h com.google.openrtb.BidRequest)
+    COMMAND ${PROTOG_BIN} -p ${OPENRTB_PROTO} -i openrtb.pb.h -m com.google.openrtb.BidRequest)
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
