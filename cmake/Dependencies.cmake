@@ -25,7 +25,7 @@ list(APPEND THIRDPARTY_LIBRARIES ${CURL_LIBRARIES})
 
 # OpenSSL
 find_package(OPENSSL REQUIRED)
-include_directories(${OPENSSL_INCLUDE_DIRS})
+include_directories(${OPENSSL_INCLUDE_DIR})
 list(APPEND THIRDPARTY_LIBRARIES ${OPENSSL_LIBRARIES})
 
 # Open MPI's Portable Hardware Locality (required by httpp)
