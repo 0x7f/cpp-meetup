@@ -1,6 +1,6 @@
 set(OPENRTB_PROTO ${PROJECT_SOURCE_DIR}/share/openrtb.proto)
 set(PROTOG_BIN ${PROJECT_SOURCE_DIR}/thirdparty/protog/build/protog)
-set(PARSER_SRCS ${CMAKE_CURRENT_BINARY_DIR}/bidrequest_parser.pb.cpp)
+set(PARSER_SRCS ${CMAKE_CURRENT_BINARY_DIR}/bidrequest_parser.pb.cc)
 set(PARSER_HDRS ${CMAKE_CURRENT_BINARY_DIR}/bidrequest_parser.pb.h)
 
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${OPENRTB_PROTO})
