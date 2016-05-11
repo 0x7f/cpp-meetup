@@ -8,5 +8,6 @@ include(cmake/CompilerFlags.cmake)
 include(cmake/Dependencies.cmake)
 
 add_subdirectory(tools/empty/)
+add_subdirectory(tools/jsoncpp/)
 add_subdirectory(tools/protog/)
 add_subdirectory(tools/rapidjson/)
