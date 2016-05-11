@@ -21,6 +21,8 @@
 
 using namespace ::rapidjson;
 
+static bool skip_validation = false;
+
 static std::string getFileContent(const std::string& path) {
   std::ifstream file(path);
   return std::string{std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
@@ -38,21 +40,23 @@ void connection_handler(SchemaValidator* sv, HTTPP::HTTP::Connection* connection
         auto& connection = handle->connection;
         auto& response = connection->response();
 
-        Reader reader;
-        StringStream ss(body.data());
-        sv->Reset();
-        if (!reader.Parse(ss, *sv) && reader.GetParseErrorCode() != kParseErrorTermination) {
-            response.setCode(HTTPP::HTTP::HttpCode::BadRequest);
-            response.connectionShouldBeClosed(true);
-            connection->sendResponse(); // connection pointer may become invalid
-            return;
-        }
+        if (!skip_validation) {
+            Reader reader;
+            StringStream ss(body.data());
+            sv->Reset();
+            if (!reader.Parse(ss, *sv) && reader.GetParseErrorCode() != kParseErrorTermination) {
+                response.setCode(HTTPP::HTTP::HttpCode::BadRequest);
+                response.connectionShouldBeClosed(true);
+                connection->sendResponse(); // connection pointer may become invalid
+                return;
+            }
 
-        if (!sv->IsValid()) {
-            response.setCode(HTTPP::HTTP::HttpCode::BadRequest);
-            response.connectionShouldBeClosed(true);
-            connection->sendResponse(); // connection pointer may become invalid
-            return;
+            if (!sv->IsValid()) {
+                response.setCode(HTTPP::HTTP::HttpCode::BadRequest);
+                response.connectionShouldBeClosed(true);
+                connection->sendResponse(); // connection pointer may become invalid
+                return;
+            }
         }
 
         Document d;
@@ -90,10 +94,16 @@ int main() {
         return 1;
     }
 
+    const char* skip_validation_str = getenv("BENCHMARK_SKIP_VALIDATION");
+    if (skip_validation_str && strcmp("1", skip_validation_str) == 0) {
+        skip_validation = true;
+    }
+
     int numThreads = atoi(threads);
     assert(numThreads >= 0);
 
-    printf("Configuration: BENCHMARK_PORT=%s BENCHMARK_THREADS=%d\n", port, numThreads);
+    printf("Configuration: BENCHMARK_PORT=%s BENCHMARK_THREADS=%d BENCHMARK_SKIP_VALIDATION=%d\n",
+            port, numThreads, skip_validation);
 
     commonpp::thread::ThreadPool threadPool{static_cast<size_t>(numThreads)};
 
