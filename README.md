@@ -16,6 +16,8 @@ mkdir -p thirdparty/protog/build
 (cd thirdparty/protog/build && cmake .. && make)
 mkdir -p thirdparty/rapidjson/build
 (cd thirdparty/rapidjson/build && cmake .. && make)
+mkdir -p thirdparty/jsoncpp/build
+(cd thirdparty/jsoncpp/build && cmake .. && make)
 ```
 
 ```
