@@ -1,3 +1,0 @@
-wrk.method = "POST"
-wrk.headers["Content-Type"] = "application/json"
-wrk.body = '{"id":"1234534","imp":[{"id":"1"}],"site":{"id":"234563","domain":"siteabcd.com"},"device":{"ip":"64.124.253.1"},"cur":["USD"]}'
