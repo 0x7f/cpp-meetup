@@ -7,4 +7,4 @@ end
 
 wrk.method = "POST"
 wrk.headers["Content-Type"] = "application/json"
-wrk.body = readWholeFile("share/bidrequest.1.json")
+wrk.body = readWholeFile("share/bidrequest.2.json")
