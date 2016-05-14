@@ -13,3 +13,6 @@
 [submodule "thirdparty/gason"]
 	path = thirdparty/gason
 	url = https://github.com/vivkin/gason
+[submodule "thirdparty/pbjson"]
+	path = thirdparty/pbjson
+	url = https://github.com/yinqiwen/pbjson
