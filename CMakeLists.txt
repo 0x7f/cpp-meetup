@@ -7,6 +7,8 @@ include(cmake/Prerequisites.cmake)
 include(cmake/CompilerFlags.cmake)
 include(cmake/Dependencies.cmake)
 
+add_subdirectory(demo)
+
 add_subdirectory(benchmark/empty/)
 add_subdirectory(benchmark/gason/)
 add_subdirectory(benchmark/jsoncpp/)
