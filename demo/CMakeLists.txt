@@ -13,6 +13,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_SOURCE_DIR}/thirdparty/jsoncpp/include/)
 include_directories(${CMAKE_SOURCE_DIR}/thirdparty/pbjson/src/)
 
+add_executable(demo0 demo0.cpp)
+target_link_libraries(demo0 ${THIRDPARTY_LIBRARIES})
+target_link_libraries(demo0 ${CMAKE_SOURCE_DIR}/thirdparty/jsoncpp/build/src/lib_json/libjsoncpp.a)
+
 add_executable(demo1 demo1.cpp ${PROTO_SRCS} ${PROTO_HDRS}
     ${CMAKE_SOURCE_DIR}/thirdparty/pbjson/src/pbjson.cpp)
 target_link_libraries(demo1 ${THIRDPARTY_LIBRARIES})
