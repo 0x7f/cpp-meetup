@@ -1,7 +1,8 @@
 #include <httpp/HttpServer.hpp>
 #include <httpp/http/Utils.hpp>
 #include <httpp/utils/Exception.hpp>
-#include <json/json.h>
+#include <openrtb.pb.h>
+#include <pbjson.hpp>
 
 int main() {
   HTTPP::HttpServer server;
@@ -11,22 +12,24 @@ int main() {
         connection,
         [](std::unique_ptr<HTTPP::HTTP::helper::ReadWholeRequest> handle,
            const boost::system::error_code &ec) {
-          auto &connection = handle->connection;
           if (ec) {
             throw HTTPP::UTILS::convert_boost_ec_to_std_ec(ec);
           }
 
-          Json::Value root;
-          const auto &begin = handle->body.data();
-          const auto &end = begin + handle->body.size();
-          if (Json::Reader().parse(begin, end, root)) {
+          auto &connection = handle->connection;
+          handle->body.push_back('\0'); // meh.
+
+          std::string err;
+          com::google::openrtb::BidRequest bidRequest;
+          if (pbjson::json2pb(handle->body.data(), &bidRequest, err) == 0 &&
+              bidRequest.IsInitialized()) {
             connection->response()
                 .setCode(HTTPP::HTTP::HttpCode::Ok)
-                .setBody("OK:" + root["id"].asString());
+                .setBody("OK: " + bidRequest.id());
           } else {
             connection->response()
                 .setCode(HTTPP::HTTP::HttpCode::BadRequest)
-                .setBody("ERROR:");
+                .setBody("ERROR: " + err);
           }
 
           HTTPP::HTTP::setShouldConnectionBeClosed(connection->request(),
