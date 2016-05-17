@@ -1,7 +1,5 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 2.8)
 project(protog_benchmark C CXX)
-
-cmake_policy(SET CMP0063 NEW)
 
 include(cmake/Prerequisites.cmake)
 include(cmake/CompilerFlags.cmake)
