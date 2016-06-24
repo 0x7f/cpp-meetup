@@ -10,5 +10,5 @@ add_custom_command(
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
-add_executable(protogd main.cpp ${PROTO_SRCS} ${PROTO_HDRS} ${PARSER_SRCS})
-target_link_libraries(protogd ${THIRDPARTY_LIBRARIES} yajl)
+add_executable(protog_httppd main.cpp ${PROTO_SRCS} ${PROTO_HDRS} ${PARSER_SRCS})
+target_link_libraries(protog_httppd ${THIRDPARTY_LIBRARIES} yajl)

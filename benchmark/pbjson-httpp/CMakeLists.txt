@@ -12,6 +12,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 include_directories(${CMAKE_SOURCE_DIR}/thirdparty/pbjson/src/)
 
-add_executable(pbjsond main.cpp ${PROTO_SRCS} ${PROTO_HDRS} ${PARSER_SRCS}
+add_executable(pbjson_httppd main.cpp ${PROTO_SRCS} ${PROTO_HDRS} ${PARSER_SRCS}
     ${CMAKE_SOURCE_DIR}/thirdparty/pbjson/src/pbjson.cpp)
-target_link_libraries(pbjsond ${THIRDPARTY_LIBRARIES} yajl)
+target_link_libraries(pbjson_httppd ${THIRDPARTY_LIBRARIES} yajl)
