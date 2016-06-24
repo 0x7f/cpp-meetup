@@ -1,5 +1,6 @@
 include_directories(${CMAKE_SOURCE_DIR}/benchmark/include/)
 
+add_subdirectory(empty-evhtp/)
 add_subdirectory(empty-httpp/)
 add_subdirectory(gason-httpp/)
 add_subdirectory(jsoncpp-httpp/)
