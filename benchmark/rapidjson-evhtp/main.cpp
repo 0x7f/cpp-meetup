@@ -71,7 +71,6 @@ static void add_cb(evhtp_request_t* req, void* a) {
 int main() {
     const char* host;
     uint16_t port, num_threads;
-    bool skip_validation;
     parse_env(&host, &port, &num_threads, &skip_validation);
 
     const auto path = "share/openrtb-schema_bid-request_v2-3.json";
