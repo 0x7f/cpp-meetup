@@ -43,3 +43,7 @@ list(APPEND THIRDPARTY_LIBRARIES ${HWLOC_LIBRARIES})
 include(${CMAKE_CURRENT_LIST_DIR}/FindTBB.cmake)
 include_directories(${TBB_INCLUDE_DIRS})
 list(APPEND THIRDPARTY_LIBRARIES ${TBB_LIBRARIES})
+
+# libevent2 + libevhtp
+include_directories(/usr/local/include/evhtp/)
+list(APPEND THIRDPARTY_LIBRARIES event_core event_openssl evhtp)

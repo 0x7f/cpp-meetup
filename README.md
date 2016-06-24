@@ -4,7 +4,7 @@ See https://github.com/0x7f/protog
 
 ## building
 
-Install build-essentials, git, protobuf 2.6.1 and required dependencies of [daedric/httpp](https://github.com/daedric/httpp/).
+Install build-essentials, git, protobuf 2.6.1, libevent-dev, libevhtp-dev and required dependencies of [daedric/httpp](https://github.com/daedric/httpp/).
 
 ```
 git submodule update --init --recursive
