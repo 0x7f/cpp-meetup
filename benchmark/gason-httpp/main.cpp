@@ -15,6 +15,8 @@
 
 #include <gason.h>
 
+#include "parse_env.h"
+
 using HTTPP::HTTP::Connection;
 using HTTPP::HTTP::helper::ReadWholeRequest;
 using HTTPP::HTTP::setShouldConnectionBeClosed;
@@ -55,36 +57,17 @@ int main() {
     boost::log::core::get()->set_filter(boost::log::trivial::severity >=
                                         boost::log::trivial::warning);
 
-    const char* host = "localhost";
-    const char* port = getenv("BENCHMARK_PORT");
-    if (!port) {
-        fprintf(stderr, "BENCHMARK_PORT not configured.\n");
-        return 1;
-    }
+    const char* host;
+    uint16_t port, num_threads;
+    bool skip_validation;
+    parse_env(&host, &port, &num_threads, &skip_validation);
 
-    const char* threads = getenv("BENCHMARK_THREADS");
-    if (!threads) {
-        fprintf(stderr, "BENCHMARK_THREADS not configured.\n");
-        return 1;
-    }
-
-    const char* skip_validation_str = getenv("BENCHMARK_SKIP_VALIDATION");
-    if (skip_validation_str && strcmp("1", skip_validation_str) == 0) {
-        skip_validation = true;
-    }
-
-    int numThreads = atoi(threads);
-    assert(numThreads >= 0);
-
-    printf("Configuration: BENCHMARK_PORT=%s BENCHMARK_THREADS=%d BENCHMARK_SKIP_VALIDATION=%d\n",
-            port, numThreads, skip_validation);
-
-    commonpp::thread::ThreadPool threadPool{static_cast<size_t>(numThreads)};
+    commonpp::thread::ThreadPool threadPool{static_cast<size_t>(num_threads)};
 
     HTTPP::HttpServer server{threadPool};
     server.start();
     server.setSink(std::bind(&connection_handler, std::placeholders::_1));
-    server.bind(host, port);
+    server.bind(host, std::to_string(port));
 
     printf("READY\n");
 

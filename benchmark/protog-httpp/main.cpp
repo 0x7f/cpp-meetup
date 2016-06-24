@@ -11,6 +11,7 @@
 
 #include <commonpp/thread/ThreadPool.hpp>
 
+#include "parse_env.h"
 #include "bidrequest_parser.pb.h"
 
 using namespace ::com::google::openrtb;
@@ -86,30 +87,17 @@ int main() {
     boost::log::core::get()->set_filter(boost::log::trivial::severity >=
                                         boost::log::trivial::warning);
 
-    const char* host = "localhost";
-    const char* port = getenv("BENCHMARK_PORT");
-    if (!port) {
-        fprintf(stderr, "BENCHMARK_PORT not configured.\n");
-        return 1;
-    }
+    const char* host;
+    uint16_t port, num_threads;
+    bool skip_validation;
+    parse_env(&host, &port, &num_threads, &skip_validation);
 
-    const char* threads = getenv("BENCHMARK_THREADS");
-    if (!threads) {
-        fprintf(stderr, "BENCHMARK_THREADS not configured.\n");
-        return 1;
-    }
-
-    int numThreads = atoi(threads);
-    assert(numThreads >= 0);
-
-    printf("Configuration: BENCHMARK_PORT=%s BENCHMARK_THREADS=%d\n", port, numThreads);
-
-    commonpp::thread::ThreadPool threadPool{static_cast<size_t>(numThreads)};
+    commonpp::thread::ThreadPool threadPool{static_cast<size_t>(num_threads)};
 
     HTTPP::HttpServer server{threadPool};
     server.start();
     server.setSink(&connection_handler);
-    server.bind(host, port);
+    server.bind(host, std::to_string(port));
 
     printf("READY\n");
 
