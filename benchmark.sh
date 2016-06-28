@@ -19,7 +19,9 @@ BENCHARKS="empty-evhtp
   protog-evhtp
   protog-httpp
   rapidjson-evhtp
-  rapidjson-httpp"
+  rapidjson-httpp
+  arduinojson-evhtp
+  arduinojson-httpp"
 
 mkdir -p results
 
