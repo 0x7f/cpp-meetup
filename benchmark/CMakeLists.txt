@@ -57,3 +57,11 @@ target_include_directories(rapidjson-evhtpd PUBLIC ${CMAKE_SOURCE_DIR}/thirdpart
 add_executable(rapidjson-httppd rapidjson-httpp.cpp)
 target_link_libraries(rapidjson-httppd ${THIRDPARTY_LIBRARIES})
 target_include_directories(rapidjson-httppd PUBLIC ${CMAKE_SOURCE_DIR}/thirdparty/rapidjson/include/)
+
+# arduinojson
+add_executable(arduinojson-evhtpd arduinojson-evhtp.cpp)
+target_link_libraries(arduinojson-evhtpd ${THIRDPARTY_LIBRARIES})
+target_include_directories(arduinojson-evhtpd PUBLIC ${CMAKE_SOURCE_DIR}/thirdparty/ArduinoJson/include/)
+add_executable(arduinojson-httppd arduinojson-httpp.cpp)
+target_link_libraries(arduinojson-httppd ${THIRDPARTY_LIBRARIES})
+target_include_directories(arduinojson-httppd PUBLIC ${CMAKE_SOURCE_DIR}/thirdparty/ArduinoJson/include/)

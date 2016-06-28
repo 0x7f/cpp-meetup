@@ -16,3 +16,6 @@
 [submodule "thirdparty/pbjson"]
 	path = thirdparty/pbjson
 	url = https://github.com/yinqiwen/pbjson
+[submodule "thirdparty/ArduinoJson"]
+	path = thirdparty/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson
